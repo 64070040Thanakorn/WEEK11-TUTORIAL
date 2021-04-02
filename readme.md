@@ -4,9 +4,7 @@ Week 10 - Vue Cil and connect with back-end
 ## Tutorial
 
 
-#### 1. Install Vue Cil
-
-#### วิธีทำ
+### 1. Install Vue CLI
 
 1. Run command เพื่อสร้าง Project Vue และ run project
 
@@ -14,7 +12,18 @@ Week 10 - Vue Cil and connect with back-end
 npm install @vue/cli 
 
 ./node_modules/.bin/vue create myfrontend
+```
+เลือก `Default ([Vue 2] babel, eslint)` และกด Enter
+```sh
+Vue CLI v4.5.12
+? Please pick a preset: (Use arrow keys)
+❯ Default ([Vue 2] babel, eslint) 
+  Default (Vue 3 Preview) ([Vue 3] babel, eslint) 
+  Manually select features 
 
+```
+ไปที่ folder myfrontend เพื่อ ติดตั้ง Bulma และ Axios
+```sh
 cd myfrontend
 
 npm install bulma axios
@@ -27,21 +36,22 @@ npm run serve
 
     <img src="image/Screen Shot 2564-03-30 at 22.48.42.png" width="600" />
 
+3. เพื่อความสะดวกในการเขียนโปรแกรม ติดตั้ง VS Code Extension: `Vetur` by Pine Wu
 ___
 
-#### 2. Install Vue-Router
+### 2. Install Vue-Router
 
-1. ลง vue-router
+1. ใน folder `myfrontend` พิมพ์คำสั่ง
 ```sh
 npm install vue-router
 ```
 
-2. สร้าง folder `router` ใน folder `src` และสร้างไฟล์ `index.js` ใน Folder `router`
+2. สร้าง folder `router` ใน folder `src` และสร้างไฟล์ `index.js` ใน folder `router`
 
 
 3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `Home.vue` ใน folder `views`
 
-```
+```javascript
 // folder และไฟล์ที่สร้างมาใหม่
 src
  |__ router
@@ -60,13 +70,10 @@ src
 
 <script>
 export default {
-    create(){},
     data() {
       return {}
-    },
-    methods: {}
+    }
   }
-
 </script>
 
 <style scoped>
@@ -120,9 +127,8 @@ new Vue({
 </template>
 ```
 
-
 ___
-#### 3. แปลง ejs ที่ทำในสัปดาห์ก่อน ๆ ให้เป็น Vue
+### 3. แปลง ejs ที่ทำในสัปดาห์ก่อน ๆ ให้เป็น Vue
 
 เราจะนำ code ที่เราทำในสัปดาห์ก่อน ๆ มาใช้กับ project vue โดยหน้าที่นำมาใช้คือหน้า `index.ejs` ใน Week ที่ 9
 
@@ -202,7 +208,7 @@ created() {
                 <div class="content">{{ blog.content }}</div>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item" ">Read more...</a>
+                <a class="card-footer-item">Read more...</a>
                 <a class="card-footer-item">
                   <span class="icon-text">
                     <span class="icon">
@@ -226,18 +232,32 @@ created() {
 import 'bulma/css/bulma.css'
 ```
 
-8. หากใครมีปัญหาเรื่อง icon ไม่แสดง ให้ copy script ดังกล่าวไปไว้ที่ `public/index.html`
+8. หากใครมีปัญหาเรื่อง icon ไม่แสดง ให้ copy script ดังกล่าวไปไว้ที่ `myfrontend/public/index.html`
 
 ```html
 <script src="https://kit.fontawesome.com/466f7f0339.js" crossorigin="anonymous"></script>
 ```
+
+
+___
+### 4. Fix CORS Problems
+1. ไปที่ folder `backend` and ติดตั้ง cors
+```
+npm install cors
+```
+2. ไปที่ index.js และเพิ่ม code
+```javascript
+var cors = require('cors')
+```
+**NOTE: แต่ว่าใน folder `backend` ที่เตรียมมาให้นี้ทำการติดตั้ง cors ไว้แล้ว สามารถสั่ง `npm install` ได้เลย**
+
 
 ___
 ## Exercise
 
 1. เมื่อกดปุ่ม Like ของแต่ละ Blog ให้ยิง axios เพื่อไปเรียก api addlike และเพิ่มจำนวนยอดไลค์ของ Blog ที่กด
 
-2. ให้แปลงหน้า Detail ที่มีอยู่แล้วให้เป็น version vue โดยให้เพิ่มเป็น path ตามนี้ `/detail/id` โดย id ที่อยู่บน path คือเลขของ blog ที่ใส่เข้ามา จากนั้นเอา id ที่ใส่มาใช้ในการยิง api เพื่อ get ข้อมูลจาก backend
+2. ให้แปลงหน้า Detail ที่มีอยู่แล้วให้เป็น version vue โดยให้เพิ่มเป็น path ตามนี้ `/detail/:id` โดย id ที่อยู่บน path คือเลขของ blog ที่ใส่เข้ามา จากนั้นเอา id ที่ใส่มาใช้ในการยิง api เพื่อ get ข้อมูลจาก backend
 
 
 
