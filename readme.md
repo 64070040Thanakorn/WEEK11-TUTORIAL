@@ -248,6 +248,8 @@ npm install cors
 2. ไปที่ index.js และเพิ่ม code
 ```javascript
 var cors = require('cors')
+
+app.use(cors())
 ```
 **NOTE: แต่ว่าใน folder `backend` ที่เตรียมมาให้นี้ทำการติดตั้ง cors ไว้แล้ว สามารถสั่ง `npm install` ได้เลย**
 
