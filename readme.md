@@ -9,10 +9,15 @@ Week 10 - Vue Cil and connect with back-end
 1. Run command เพื่อสร้าง Project Vue และ run project
 
 ```sh
-npm install @vue/cli 
+# Windows, ให้ใช้ Cmd.exe แทน Powershell
+npm install -g @vue/cli 
+vue create myfrontend
 
-./node_modules/.bin/vue create myfrontend
+# Mac
+sudo npm install -g @vue/cli
+vue create myfrontend
 ```
+
 เลือก `Default ([Vue 2] babel, eslint)` และกด Enter
 ```sh
 Vue CLI v4.5.12
