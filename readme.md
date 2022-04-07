@@ -46,9 +46,9 @@ ___
 
 ### 2. Install Vue-Router
 
-1. ใน folder `myfrontend` พิมพ์คำสั่ง
+1. ใน folder `myfrontend` พิมพ์คำสั่ง เพื่อติดตั้ง Vue Router Version 3
 ```sh
-npm install vue-router
+npm install vue-router@3
 ```
 
 2. สร้าง folder `router` ใน folder `src` และสร้างไฟล์ `index.js` ใน folder `router`
