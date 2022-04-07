@@ -1,5 +1,5 @@
-# WEEK10
-Week 10 - Vue Cil and connect with back-end
+# WEEK11-1
+Week 11-1 - Vue Cil and connect with back-end
 
 ## Tutorial
 
@@ -54,7 +54,7 @@ npm install vue-router@3
 2. สร้าง folder `router` ใน folder `src` และสร้างไฟล์ `index.js` ใน folder `router`
 
 
-3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `Home.vue` ใน folder `views`
+3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `HomePage.vue` ใน folder `views`
 
 ```javascript
 // folder และไฟล์ที่สร้างมาใหม่
@@ -62,10 +62,10 @@ src
  |__ router
  |     |__ index.js
  |__ views
-       |__ Home.vue
+       |__ HomePage.vue
 ```
 
-4. ในไฟล์ `views/Home.vue` ใส่ code นี้ลงไป
+4. ในไฟล์ `views/HomePage.vue` ใส่ code นี้ลงไป
 ```html
 <template>
   <div>
@@ -97,7 +97,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue') // set home as path '/'
+    component: () => import('../views/HomePage.vue') // set home as path '/'
   },
 ]
 
@@ -137,7 +137,7 @@ ___
 
 เราจะนำ code ที่เราทำในสัปดาห์ก่อน ๆ มาใช้กับ project vue โดยหน้าที่นำมาใช้คือหน้า `index.ejs` ใน Week ที่ 9
 
-1. ในไฟล์ `views/Home.vue` ให้ import axios เพื่อใช้งานการเรียก api ใน tag script
+1. ในไฟล์ `views/HomePage.vue` ให้ import axios เพื่อใช้งานการเรียก api ใน tag script
 ```javascript
 <script>
 import axios from "axios";
@@ -167,7 +167,7 @@ created() {
 }
 ```
 
-4. หลังจากที่ได้ data เราก็จะ render ออกมา โดยให้ copy ส่วนที่**อยู่ใน** `<body>` จาก `index.ejs` โดยเอามาไว้ในส่วน `<template>` ในไฟล์ `Home.vue`
+4. หลังจากที่ได้ data เราก็จะ render ออกมา โดยให้ copy ส่วนที่**อยู่ใน** `<body>` จาก `index.ejs` โดยเอามาไว้ในส่วน `<template>` ในไฟล์ `HomePage.vue`
 ```html
 <template>
   <div class="container is-widescreen">
