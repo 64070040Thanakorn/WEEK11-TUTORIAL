@@ -1,5 +1,5 @@
 # WEEK11-1
-Week 11-1 - Vue Cil and connect with back-end
+Week 11-1 - Vue CLI and connect with back-end
 
 ## Tutorial
 
@@ -134,7 +134,7 @@ new Vue({
 ___
 ### 3. แปลง ejs ที่ทำในสัปดาห์ก่อน ๆ ให้เป็น Vue
 
-เราจะนำ code ที่เราทำในสัปดาห์ก่อน ๆ มาใช้กับ project vue โดยหน้าที่นำมาใช้คือหน้า `index.ejs` ใน Week ที่ 9
+เราจะนำ code ที่เราทำในสัปดาห์ก่อน ๆ มาใช้กับ project vue โดยหน้าที่นำมาใช้คือหน้า `views/index.ejs` ใน Week ที่ 10
 
 1. ในไฟล์ `views/HomePage.vue` ให้ import axios เพื่อใช้งานการเรียก api ใน tag script
 ```javascript
@@ -199,33 +199,53 @@ created() {
     </section>
     <section class="section" id="app">
       <div class="content">
-        <div class="columns is-multiline">
-          <div class="column is-3" v-for="blog in blogs" :key="blog.id">
-            <div class="card">
-              <div class="card-image pt-5">
-                <figure class="image">
-                  <img style="height: 120px" :src="blog.file_path" alt="Placeholder image" />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="title">{{ blog.title }}</div>
-                <div class="content">{{ blog.content }}</div>
-              </div>
-              <footer class="card-footer">
-                <a class="card-footer-item">Read more...</a>
-                <a class="card-footer-item">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="far fa-heart"></i>
-                    </span>
-                    <span>Like</span>
-                  </span>
-                </a>
-              </footer>
-            </div>
+        <div class="columns">
+          <div class="column is-4 is-offset-2">
+            <input class="input" type="text" name="search" placeholder="ค้นชื่อบทความ">
+          </div>
+          <div class="column is-2">
+            <input class="button" type="submit" value="Search">
+          </div>
+          <div class="column is-2">
+            <input class="button" type="button" value="Create New Blog">
           </div>
         </div>
-      </div>
+        </div>
+        <div class="content">
+          <div class="columns is-multiline">
+              <div class="column is-3" v-for="blog in blogs" :key="blog.id">
+                <div class="card">
+                    <div class="card-image pt-5">
+                      <figure class="image">
+                        <img :src="blog.file_path ? blog.file_path : 'https://bulma.io/images/placeholders/640x360.png'" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="title">{{ blog.title }} </div>
+                      <div class="content">
+                        <span v-if="blog.content.length > 200">
+                          {{ blog.content.substring(0, 197) + "..." }}
+                        </span>
+                        <span v-else>
+                          {{ blog.content }}
+                        </span>
+                      </div>
+                    </div>
+                    <footer class="card-footer">
+                      <a class="card-footer-item">Read more...</a>
+                      <a class="card-footer-item">
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="far fa-heart"></i>
+                          </span>
+                          <span>Like</span>
+                        </span>
+                      </a>
+                    </footer>
+                </div>
+              </div>
+          </div>
+          </div>
     </section>
   </div>
 </template>
@@ -244,7 +264,23 @@ import 'bulma/css/bulma.css'
 
 
 ___
-### 4. Fix CORS Problems
+### 4. Start the back-end server
+1. ไปที่ folder `backend` และสั่งคำสั่ง
+```
+npm install
+```
+เพื่อติดตั้ง library ที่เกี่ยวข้อง
+
+2. Run back-end server ด้วยคำสั่ง 
+```
+npm run serve
+หรือ
+npx nodemon index.js
+```
+**หมายเหตุ:** อย่าลืมแก้ไข password ของ database ในไฟล์ config.js
+
+___
+### 5. Fix CORS Problems
 1. ไปที่ folder `backend` and ติดตั้ง cors
 ```
 npm install cors
@@ -258,14 +294,213 @@ app.use(cors())
 **NOTE: แต่ว่าใน folder `backend` ที่เตรียมมาให้นี้ทำการติดตั้ง cors ไว้แล้ว สามารถสั่ง `npm install` ได้เลย**
 
 
+### 6. Create New Blog Page
+เรามาลองเปลี่ยนหน้าสร้าง blog ใหม่จาก `ejs` เป็น `Vue` กันบ้างนะครับ
+
+1. ในโฟลเดอร์ `views/blogs/` สร้างไฟล์ `CreateBlog.vue` โดยทำการ copy code จากสัปดาห์ที่ 10 ในไฟล์ `views/blogs/create.ejs`
+```html
+<template>
+  <div>
+    <section class="hero">
+      <div class="hero-body ml-5">
+        <p class="title">Create a New Blog</p>
+      </div>
+    </section>
+    <section class="container">
+        <div class="content">
+          <div class="field">
+            <label class="label">Title</label>
+            <input class="input" type="text" name="title" placeholder="Blog title" value="">
+            <p class="help is-danger">*Required</p>
+          </div>
+          <div class="field">
+            <label class="label">Content</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="Textarea" name="content"></textarea>
+              <p class="help is-danger">*Required</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Status</label>
+            <div class="control">
+              <div class="select">
+                <select name="status">
+                  <option value="01">Drafted</option>
+                  <option value="02">Published</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="checkbox">
+                <input type="checkbox" name="pinned">
+                Pin this blog?
+              </label>
+            </div>
+          </div>
+          <div class="file">
+            <label class="file-label">
+              <input class="file-input" type="file" name="blog_image">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose an image…
+                </span>
+              </span>
+            </label>
+          </div>
+          <div class="field is-grouped mt-3">
+            <div class="control">
+              <input type="button" class="button is-link" value="submit">
+            </div>
+            <div class="control">
+              <button class="button is-link is-light">Back to home</button>
+            </div>
+          </div>
+        </div>
+    </section>
+  </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {}
+      },
+}
+</script>
+```
+
+2. ทำการเพิ่ม `path` ใหม่สำหรับหน้า create new blog ในไฟล์ `router.js`
+```javascript
+...
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('./views/HomePage.vue') 
+  },
++  {
++    path: '/blog/create',
++    name: 'Create new blog',
++    component: () => import('./views/blogs/CreateBlog.vue') // set create blog as path '/blog/create'
++  },
+]
+...
+```
+
+3. ปรับเพิ่ม `<router-link>` ในหน้า `HomePage.vue` เมื่อกดจะไปที่ `path` = `/blog/create`
+```html
+...
+  <div class="column is-2">
++    <router-link to="/blog/create">
+      <input class="button" type="button" value="Create New Blog">
++    </router-link>
+  </div>
+...
+```
+
+4. เพิ่ม `v-model` ใน input field ในหน้า `CreateBlog.vue` (ยกเว้น `input type="file"`)
+```html
+...
+  <div class="field">
+    <label class="label">Title</label>
++   <input class="input" type="text" name="title" placeholder="Blog title" v-model="title">
+    <p class="help is-danger">*Required</p>
+  </div>
+  <div class="field">
+    <label class="label">Content</label>
+    <div class="control">
++     <textarea class="textarea" placeholder="Textarea" name="content" v-model="content"></textarea>
+      <p class="help is-danger">*Required</p>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Status</label>
+    <div class="control">
+      <div class="select">
++       <select name="status" v-model="status">
+          <option value="01">Drafted</option>
+          <option value="02">Published</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <label class="checkbox">
++       <input type="checkbox" name="pinned" v-model="pinned">
+        Pin this blog?
+      </label>
+    </div>
+  </div>
+...
+```
+และ ประกาศตัวแปรใน `data()`
+```javascript
+...
+  data() {
+      return {
+          title: '',
+          content: '',
+          status: '01',
+          pinned: false,
+          file: null
+      }
+  },
+...
+```
+
+5. แก้ไข `input type="file"` ให้เรียก method `handleFileUpload()` เมื่อมีการเปลี่ยนค่า
+```html
+...
+<input class="file-input" type="file" id="file" ref="file" @change="handleFileUpload()">
+...
+```
+
+6. แก้ไขปุ่ม `submit` ให้เรียก method `submit()` เมื่อถูกคลิ้ก
+```html
+...
+<input type="button" class="button is-link" value="submit" @click="submit()">
+...
+```
+
+7. เพิ่ม method `handleFileUpload()` และ `submit()` ใน `methods`
+```javascript
+...
+  methods: {
+      handleFileUpload(){
+          this.file = this.$refs.file.files[0];
+      },
+      submit(){
+          var formData = new FormData();
+          formData.append("blog_image", this.file);
+          formData.append("title", this.title)
+          formData.append("content", this.content)
+          formData.append("status", this.status)
+          formData.append("pinned", this.pinned)
+          axios.post('http://localhost:3000/blogs', formData, {
+              headers: {
+              'Content-Type': 'multipart/form-data'
+              }
+          }).then(response => {
+              this.$router.push({path: '/'}) // Success! -> redirect to home page
+          })
+          .catch(error => {
+              console.log(error.message);
+          });
+      }
+  }
+...
+```
 ___
 ## Exercise
 
-1. เมื่อกดปุ่ม Like ของแต่ละ Blog ให้ยิง axios เพื่อไปเรียก api addlike และเพิ่มจำนวนยอดไลค์ของ Blog ที่กด
+1. เมื่อกดปุ่ม Like ของแต่ละ blog ให้ยิง axios เพื่อไปเรียก api `/blogs/addlike/:blogId` ที่ backend และเพิ่มจำนวนยอดไลค์ของ blog ที่กดในหน้า frontend
 
-2. ให้แปลงหน้า Detail ที่มีอยู่แล้วให้เป็น version vue โดยให้เพิ่มเป็น path ตามนี้ `/detail/:id` โดย id ที่อยู่บน path คือเลขของ blog ที่ใส่เข้ามา จากนั้นเอา id ที่ใส่มาใช้ในการยิง api เพื่อ get ข้อมูลจาก backend
+2. ให้แปลงหน้า blog detail ที่ทำด้วย `ejs` จากสัปดาห์ที่ 10 ให้เป็น version vue + axios โดยให้สร้างไฟล์ `blogs/BlogDetail.vue` และทำการเพิ่มเป็น path `/detail/:id` ใน `router.js` โดย `id` ที่อยู่บน path คือเลขของ blog ที่ใส่เข้ามา จากนั้นเอา `id` ที่ใส่มาใช้ในการยิง api เพื่อ get ข้อมูลจาก backend
 
-
-
-
-
+3. ต่อเนื่องจากข้อ 2 ให้ปรับ code `ejs` จากสัปดาห์ที่ 10 ในส่วนของการ Add new comment ให้่เป็น version vue + axios
