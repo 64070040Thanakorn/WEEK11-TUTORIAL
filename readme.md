@@ -51,7 +51,7 @@ ___
 npm install vue-router@3
 ```
 
-2. สร้าง folder `router` ใน folder `src` และสร้างไฟล์ `index.js` ใน folder `router`
+2. สร้างไฟล์ `index.js` ใน folder `src`
 
 
 3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `HomePage.vue` ใน folder `views`
@@ -59,8 +59,7 @@ npm install vue-router@3
 ```javascript
 // folder และไฟล์ที่สร้างมาใหม่
 src
- |__ router
- |     |__ index.js
+ |__ router.js
  |__ views
        |__ HomePage.vue
 ```
@@ -85,7 +84,7 @@ export default {
 </style>
 ```
 
-5. copy code ไปลงใน `router/index.js` เพื่อเป็น config ของ router ใน project vue
+5. copy code ไปลงใน `router.js` เพื่อเป็น config ของ router ใน project vue
 
 ```javascript
 import Vue from 'vue'
