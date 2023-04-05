@@ -1,5 +1,5 @@
-# WEEK11-1
-Week 11-1 - Vue CLI and connect with back-end
+# WEEK11 Tutorial & Exercises
+Week 11 - Vue CLI and connecting to the back-end
 
 ## Tutorial
 
@@ -497,7 +497,7 @@ const routes = [
 ...
 ```
 ___
-## Exercise
+## Exercises
 
 1. เมื่อกดปุ่ม Like ของแต่ละ blog ให้ยิง axios เพื่อไปเรียก api `/blogs/addlike/:blogId` ที่ backend และเพิ่มจำนวนยอดไลค์ของ blog ที่กดในหน้า frontend
 
