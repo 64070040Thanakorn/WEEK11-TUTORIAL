@@ -1,24 +1,19 @@
 const express = require("express")
-const path = require("path")
 const pool = require("../config")
+const upload = require("../multer");
 
 router = express.Router()
 
-// Require multer for file upload
-const multer = require('multer')
-// SET STORAGE
-var storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './static/uploads')
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-  }
-})
-const upload = multer({ storage: storage })
-
 router.post("/blogs/search", async function (req, res, next) {
   // Your code here
+  try {
+    const [rows, fields] = await pool.query("SELECT * FROM blogs WHERE title LIKE ?", [`%${req.query.search}%`]);
+
+    return res.json(rows);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
 });
 
 router.post("/blogs/addlike/:blogId", async function (req, res, next) {
@@ -52,57 +47,58 @@ router.post("/blogs/addlike/:blogId", async function (req, res, next) {
 
 router.post("/blogs", upload.single('blog_image'), async function (req, res, next) {
   const file = req.file;
-    if (!file) {
-      const error = new Error("Please upload a file");
-      error.httpStatusCode = 400;
-      return res.json(error)
-    }
-
+    
     const title = req.body.title;
     const content = req.body.content;
     const status = req.body.status;
     const pinned = req.body.pinned;
-
+    
+    if (!file || !title || !content || !status || !pinned ) {
+      const error = new Error("Please upload a file");
+      error.httpStatusCode = 400;
+      return res.json(error)
+    }
     const conn = await pool.getConnection()
     // Begin transaction
     await conn.beginTransaction();
-
     try {
       let results = await conn.query(
-        "INSERT INTO blogs(title, content, status, pinned, `like`,create_date) VALUES(?, ?, ?, ?, 0,CURRENT_TIMESTAMP);",
+        "INSERT INTO blogs(title, content, status, pinned, `like`, create_date) VALUES(?, ?, ?, ?, 0,CURRENT_TIMESTAMP);",
         [title, content, status, pinned]
       )
       const blogId = results[0].insertId;
-
+  
       await conn.query(
-        "INSERT INTO images(blog_id, file_path) VALUES(?, ?);",
-        [blogId, file.path.substr(6)])
-
+        "INSERT INTO images(blog_id, file_path, main) VALUES(?, ?, ?);",
+        [blogId, file.path.substr(6), 1])
+  
       await conn.commit()
-      res.json("success!")
+      res.redirect("/")
     } catch (err) {
       await conn.rollback();
-      res.json(err)
+      next(err);
     } finally {
       console.log('finally')
       conn.release();
     }
-});
+  });
 
 router.get("/blogs/:id", function (req, res, next) {
   const promise1 = pool.query("SELECT * FROM blogs WHERE id=?", [req.params.id]);
-  const promise2 = pool.query("SELECT * FROM comments WHERE blog_id=?", [req.params.id]);
-  const promise3 = pool.query("SELECT * FROM images WHERE blog_id=? AND comment_id IS NULL", [req.params.id])
+  const promise2 = pool.query("SELECT * FROM comments c LEFT OUTER JOIN images i ON (c.id = i.comment_id) WHERE c.blog_id=? ORDER BY c.comment_date", [req.params.id]);
+  const promise3 = pool.query("SELECT * FROM images WHERE blog_id=? AND comment_id IS NULL", [req.params.id]);
 
   Promise.all([promise1, promise2, promise3])
     .then((results) => {
       const blogs = results[0];
       const comments = results[1];
       const images = results[2];
+      // console.log(comments[0]);
+      // console.log(images[0][0]);
       res.json({
         blog: blogs[0][0],
-        images: images[0],
         comments: comments[0],
+        images: images[0],
         error: null,
       });
     })
