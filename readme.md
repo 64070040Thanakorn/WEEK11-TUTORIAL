@@ -447,7 +447,7 @@ const routes = [
           title: '',
           content: '',
           status: '01',
-          pinned: false,
+          pinned: 0,
           file: null
       }
   },
