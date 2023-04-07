@@ -111,7 +111,7 @@ export default router
 
 6. ที่ไฟล์ `main.js` ให้เพิ่มการเรียกใช้ router
 ```javascript
-import router from './router/index'
+import router from './router'
 
 // other code ...
 
