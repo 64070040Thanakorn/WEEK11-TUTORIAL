@@ -51,7 +51,7 @@ ___
 npm install vue-router@3
 ```
 
-2. สร้างไฟล์ `index.js` ใน folder `src`
+2. สร้างไฟล์ `router.js` ใน folder `src`
 
 
 3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `HomePage.vue` ใน folder `views`
