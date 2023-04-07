@@ -55,7 +55,7 @@ router.post("/blogs", upload.single('blog_image'), async function (req, res, nex
     if (!file) {
       const error = new Error("Please upload a file");
       error.httpStatusCode = 400;
-      return res.json(error)
+      return res.status(400).json(error)
     }
 
     const title = req.body.title;
@@ -82,7 +82,7 @@ router.post("/blogs", upload.single('blog_image'), async function (req, res, nex
       res.json("success!")
     } catch (err) {
       await conn.rollback();
-      res.json(err)
+      res.status(400).json(err)
     } finally {
       console.log('finally')
       conn.release();
