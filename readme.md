@@ -51,7 +51,7 @@ ___
 npm install vue-router@3
 ```
 
-2. สร้างไฟล์ `index.js` ใน folder `src`
+2. สร้างไฟล์ `router.js` ใน folder `src`
 
 
 3. สร้าง folder ชื่อว่า `views` ใน folder `src` และสร้างไฟล์ `HomePage.vue` ใน folder `views`
@@ -96,7 +96,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/HomePage.vue') // set home as path '/'
+    component: () => import('./views/HomePage.vue') // set home as path '/'
   },
 ]
 
@@ -111,7 +111,7 @@ export default router
 
 6. ที่ไฟล์ `main.js` ให้เพิ่มการเรียกใช้ router
 ```javascript
-import router from './router/index'
+import router from './router'
 
 // other code ...
 
@@ -447,7 +447,7 @@ const routes = [
           title: '',
           content: '',
           status: '01',
-          pinned: false,
+          pinned: 0,
           file: null
       }
   },

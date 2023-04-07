@@ -76,7 +76,7 @@ router.post("/blogs", upload.single('blog_image'), async function (req, res, nex
       res.redirect("/")
     } catch (err) {
       await conn.rollback();
-      next(err);
+      res.status(400).json(err)
     } finally {
       console.log('finally')
       conn.release();
